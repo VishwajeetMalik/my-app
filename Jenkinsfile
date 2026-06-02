@@ -15,5 +15,11 @@ pipeline {
                 sh 'ls -la'
             }
         }
+
+        stage('Docker Build Simulation') {
+            steps {
+                echo 'Docker build would happen here'
+            }
+        }
     }
 }
