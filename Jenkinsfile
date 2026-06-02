@@ -5,20 +5,26 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Code fetched from GitHub'
+                echo 'Fetching source code'
             }
         }
 
-        stage('Verify') {
+        stage('Verify Project') {
             steps {
                 sh 'pwd'
                 sh 'ls -la'
             }
         }
 
-        stage('Docker Build Simulation') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Docker build would happen here'
+                echo 'Docker build stage coming next'
+            }
+        }
+
+        stage('Deploy To Kubernetes') {
+            steps {
+                echo 'Kubernetes deployment stage coming next'
             }
         }
     }
