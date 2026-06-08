@@ -5,11 +5,11 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Fetching source code'
+                echo 'Code fetched from GitHub'
             }
         }
 
-        stage('Verify Project') {
+        stage('Verify Files') {
             steps {
                 sh 'pwd'
                 sh 'ls -la'
@@ -18,13 +18,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                echo 'Docker build stage coming next'
+                sh 'docker build -t my-app:${BUILD_NUMBER} .'
             }
         }
 
-        stage('Deploy To Kubernetes') {
+        stage('Verify Image') {
             steps {
-                echo 'Kubernetes deployment stage coming next'
+                sh 'docker images | grep my-app'
             }
         }
     }
