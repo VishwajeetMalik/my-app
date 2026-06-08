@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                echo 'Code fetched from GitHub'
-            }
-        }
-
         stage('Verify Files') {
             steps {
                 sh 'pwd'
@@ -22,9 +16,25 @@ pipeline {
             }
         }
 
-        stage('Verify Image') {
+        stage('Tag Image') {
             steps {
-                sh 'docker images | grep my-app'
+                sh 'docker tag my-app:${BUILD_NUMBER} vishwajeet97/my-app:${BUILD_NUMBER}'
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+
+                    sh '''
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker push vishwajeet97/my-app:${BUILD_NUMBER}
+                    '''
+                }
             }
         }
     }
