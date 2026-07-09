@@ -37,5 +37,35 @@ pipeline {
                 }
             }
         }
+
+        stage('Clone Manifest Repository') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'github-creds',
+                    usernameVariable: 'GIT_USER',
+                    passwordVariable: 'GIT_TOKEN'
+                )]) {
+                    sh '''
+                    rm -rf manifests
+
+                    git clone https://${GIT_USER}:${GIT_TOKEN}@github.com/VishwajeetMalik/my-app-manifests.git manifests
+
+                    ls -la manifests
+                    '''
+                }
+            }
+        }
+
+        stage('Update Manifest') {
+            steps {
+                sh '''
+                sed -i "s|image: .*|image: vishwajeet97/my-app:${BUILD_NUMBER}|" manifests/deployment.yaml
+
+                echo "===== Updated deployment.yaml ====="
+                cat manifests/deployment.yaml
+                '''
+            }
+        }
+
     }
 }
