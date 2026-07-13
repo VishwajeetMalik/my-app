@@ -6,7 +6,7 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Hello Vishwajeet 🚀');
+  res.send('Hello Vishwajeet -TEST🚀');
 });
 
 app.listen(3000, () => {
